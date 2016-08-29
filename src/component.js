@@ -115,7 +115,7 @@ export class NavBar extends Component {
 	render() {
 		return(
 		<div>
-			<ul className="nav nav-pills">
+			<ul className="nav nav-tabs">
 			  <li role="presentation" className={this.state.mode == 'query' ? 'active':''}>
 			  	<a href="#" onClick={this.handleClick}>Query</a>
 			  </li>
