@@ -5,13 +5,13 @@ import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
 import {NavBar} from './component';
 
 
-const api_root = process.env.API_ROOT || "http://10.181.37.202:3001/api/";
+const api_root = process.env.API_ROOT || 'http://10.181.37.202:3001/api/';
 
 export default class AppContainer extends Component {
 	constructor() {
 		super();
 		this.state = {
-			mode: "query"
+			mode: 'query'
 		};
 
 		this.handleModeChange = this.handleModeChange.bind(this);
@@ -21,7 +21,7 @@ export default class AppContainer extends Component {
 		this.setState({
 			mode: mode
 		});
-		console.log("Mode changed to " + mode);
+		console.log('Mode changed to ' + mode);
 	}
 	getDisplayMode() {
 		if (this.state.mode == 'query') {
