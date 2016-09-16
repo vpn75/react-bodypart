@@ -25,7 +25,9 @@ export class BodyPartDropDown extends Component {
 		this.serverRequest.abort();
 	}
 
+	//This method returns Bodypart dropdown element with form validation.
 	displayStandardSelect(options) {
+		//Logic to display Bootstrap form validation
 		let baseClass = 'form-group';
 		let valState = this.props.validationState;
 		if (valState === 'success') {
@@ -47,6 +49,7 @@ export class BodyPartDropDown extends Component {
 		);
 	}
 
+	//This method returns dropdown used in edit-mode under the Query-section of App.
 	displayInlineSelect(options) {
 		return(
 			<select id='formControlBodyPartSelect' ref='bodypart' className='form-control' defaultValue={this.props.selected}>
@@ -54,7 +57,7 @@ export class BodyPartDropDown extends Component {
 			</select>
 		);
 	}
-
+	//This method returns dropdown used on the Query-section of the App.
 	displaySearchSelect(options) {
 		return(
 			<div className="form-group">
@@ -114,7 +117,7 @@ export class SearchResultTable extends Component {
 		);
 	}
 }
-
+// Component handles display of individual procedure bodyparts returned from API search. Supports Edit and Delete methods on row data.
 export class SearchResultRow extends Component {
 	constructor() {
 		super();
@@ -142,9 +145,9 @@ export class SearchResultRow extends Component {
 			</select>
 			);
 	}
-
+	//This method handles update of
 	submitDBupdate() {
-		const update_url = this.props.source + 'update/' + this.props.data._id;
+		const update_url = this.props.source + '/update/' + this.props.data._id;
 		console.log(update_url);
 		const payload = {
 			imgcode: this.refs.imgcode.value,
@@ -176,7 +179,7 @@ export class SearchResultRow extends Component {
 	}
 
 	displayEditableRow(data) {
-		const bpselect_url = this.props.source + 'bodypart/';
+		const bpselect_url = this.props.source + '/bodypart/';
 		
 		return(
 				<tr key={data._id}>
@@ -317,20 +320,6 @@ export class ModalitySelect extends Component {
 					</select>
 				</div>
 			</div>
-
-			/*		
-			<FormGroup bsSize="small" controlId="formControlModalitySelect" ref="modality" 
-				validationState={this.props.validationState}>
-				<Col componentClass={ControlLabel} sm={2}>
-						Modality:
-				</Col>
-				<Col sm={4}>
-					<FormControl componentClass="select" placeholder="Select modality">
-						<option value="" key="default"></option>
-						{options}
-					</FormControl>
-				</Col>
-			</FormGroup> */
 		);
 	}
 }

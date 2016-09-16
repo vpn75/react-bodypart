@@ -1,4 +1,5 @@
-var path = require("path");
+const path = require("path"),
+      webpack = require("webpack");
 
 module.exports = {
   entry: "./src/main.js",
@@ -7,7 +8,9 @@ module.exports = {
     path: path.resolve(__dirname, "build"),
     filename: "bundle.js"
   },
-
+  plugins: [
+    new webpack.EnvironmentPlugin(['API_ROOT'])
+  ],
   module: {
     loaders: [{
       test: /\.jsx?$/,
