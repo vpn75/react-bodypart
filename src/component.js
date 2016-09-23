@@ -15,14 +15,19 @@ export class BodyPartDropDown extends Component {
 	}
 	//Method to collect bodypart data from API and update component state
 	componentDidMount() {
-		this.serverRequest = $.getJSON(this.props.source, (data) => {
-			this.setState({bodyparts: data.bodyparts});
-		});
-	}
-
-	//Cleanup method 
-	componentWillUnmount() {
-		this.serverRequest.abort();
+		// this.serverRequest = $.getJSON(this.props.source, (data) => {
+		// 	this.setState({bodyparts: data.bodyparts});
+		// });
+		fetch(this.props.source)
+			.then(res => {
+				res.json().then(data => {
+					this.setState({bodyparts: data.bodyparts});
+					console.log("Using FETCH api!");
+				});
+			})
+			.catch(err => {
+				console.log(err);
+			});
 	}
 
 	//This method returns Bodypart dropdown element with form validation.
@@ -260,6 +265,7 @@ export class SearchResultRow extends Component {
 		return display;
 	}
 }
+
 
 export class NavBar extends Component {
 	constructor() {
