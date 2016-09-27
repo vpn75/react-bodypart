@@ -230,16 +230,7 @@ export class CreateForm extends Component {
 		const status = this.state.submitStatus;
 
 		if (status.length > 1) {
-			/*
-			if (status == 'success') {
-				return <div className='col-sm-6 alert alert-success' role='alert'>New bodypart procedure successfully added!</div>
-			} else if (status == 'warning') {
-				return <div className='col-sm-6 alert alert-warning' role='alert'>One or more required fields missing!</div>
-			} else {
-				return <div className='col-sm-6 alert alert-danger' role='alert'>Form submission error! Please try again</div>
-			} */
-		
-
+			
 			switch (status) {
 				case 'success':
 					return <div className='col-sm-6 alert alert-success' role='alert'>New bodypart procedure successfully added!</div>
@@ -248,7 +239,7 @@ export class CreateForm extends Component {
 					return <div className='col-sm-6 alert alert-warning' role='alert'>One or more required fields missing!</div>
 					break;
 				case 'error':
-					return <div className='col-sm-6 alert alert-danger' role='alert'>Form submission error! Please try again</div>
+					return <div className='col-sm-6 alert alert-danger' role='alert'>Form submission error! Please try again.</div>
 					break;
 				default:
 					return <div />
@@ -268,31 +259,46 @@ export class CreateForm extends Component {
 					modality: isvalid_modality,
 					description: isvalid_procdesc.toUpperCase()
 				};
-
-				$.ajax({
+				//Specify HTTP POST request parameters
+				const payload = {
 					method: 'POST',
-					url: this.props.api_root,
-					data: new_bp
-				})
-				.done((resp) => {
-					this.setState({
-						submitStatus: 'success'
+					body: JSON.stringify(new_bp),
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				};
+				//Create new Request object to pass to Fetch API
+				const myPost = new Request(this.props.api_root, payload);
+				//Perform POST of new procedure bodypart using Fetch API
+				fetch(myPost)
+					.then(resp => {
+						if (resp.status == 200) {
+							this.setState({
+								submitStatus: 'success'
+							});	
+							//console.log('Submitted via Fetch api');
+						}
+						else {
+							console.log(resp);
+							throw new Error('Error on API server with submission');
+						}	
+					})
+					.catch(err => {
+						console.log(err);
+						this.setState({
+							submitStatus: 'error',
+							imgcode_state: 'error',
+							bodypart_state: 'error',
+							modality_state: 'error',
+							procdesc_state: 'error',
+						});
 					});
-					//alert('New procedure bodypart successfully submitted for ' + resp.imgcode + '/' + resp.bodypart);
-				})
-				.catch((err) => {
-					this.setState({
-						submitStatus: 'error'
-					});
-					//alert('Submission failed! Please try again.');
-				});
 				
 		}
 		else {
 			this.setState({
 				submitStatus: 'warning'
 			});
-			//alert('One or more required fields are missing!');
 		}
 	}
 
