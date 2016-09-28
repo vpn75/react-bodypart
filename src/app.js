@@ -45,7 +45,7 @@ export class App extends Component {
 	}
 
 	handleTextFocus(e) {
-		console.log(this.state.optionState);
+		//console.log(this.state.optionState);
 		e.target.value = ''; //Clear previous search value on text focus
 		this.setState({
 			optionState: 'default',
@@ -58,13 +58,17 @@ export class App extends Component {
 		let re = /^img[1-9]/i;
 		let params = {match: 'partial'};
 		if (re.test(code)) {
-			let search_url = this.props.api_root + '/code/' + code;
-			this.serverRequest = $.getJSON(search_url, params, (data) => {
-				this.setState({
-					results: data.records
-				});
-				//console.log(data);
-			});
+			let search_url = this.props.api_root + '/code/' + code + '?match=partial';
+			fetch(search_url)
+				.then(res => {
+					res.json().then(data => {
+						this.setState({
+							results: data.records
+						});
+						//console.log('Using fetch API!');
+					});
+				})
+				.catch(err => console.log(err));
 		}
 		else if (!code) {
 			this.setState({
@@ -73,11 +77,15 @@ export class App extends Component {
 		}
 		else {			
 			let search_url = this.props.api_root + '/description/' + code;
-			this.serverRequest = $.getJSON(search_url, (data) => {
-				this.setState({
-					results: (data.records.length > 0) ? data.records : []
-				});
-			});		
+			fetch(search_url)
+				.then(res => {
+					res.json().then(data => {
+						this.setState({
+							results: (data.records.length > 0) ? data.records : []
+						});
+					})
+				})
+				.catch(err => console.log(err));
 		}
 	}
 
@@ -175,7 +183,6 @@ export class CreateForm extends Component {
 	}
 
 	validateBodyPart() {
-		
 		const bodypart = document.querySelector("#formControlBodyPartSelect").value;
 
 		if (bodypart == '') {
