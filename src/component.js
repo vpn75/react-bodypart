@@ -15,14 +15,11 @@ export class BodyPartDropDown extends Component {
 	}
 	//Method to collect bodypart data from API and update component state
 	componentDidMount() {
-		// this.serverRequest = $.getJSON(this.props.source, (data) => {
-		// 	this.setState({bodyparts: data.bodyparts});
-		// });
 		fetch(this.props.source)
 			.then(res => {
 				res.json().then(data => {
 					this.setState({bodyparts: data.bodyparts});
-					console.log("Using FETCH api!");
+					//console.log("Using FETCH api!");
 				});
 			})
 			.catch(err => {
@@ -150,38 +147,64 @@ export class SearchResultRow extends Component {
 			</select>
 			);
 	}
-	//This method handles update of
+	//This method handles update of procedure bodyparts
 	submitDBupdate() {
 		const update_url = this.props.source + '/update/' + this.props.data._id;
 		console.log(update_url);
-		const payload = {
+		let bp_update = {
 			imgcode: this.refs.imgcode.value,
 			bodypart: document.querySelector('#formControlBodyPartSelect').value,
 			modality: this.refs.modality.value,
 			description: this.refs.description.value.toUpperCase()
 		};
 
-		$.ajax({
-			type: 'PUT',
-			url: update_url,
-			data: payload,
-			dataType: 'json'
-		})
-		.done((resp) => {
-			//console.log('DB update response: ' + resp);
-			this.setState({
-				editMode: false,
-				saved: true,
-				//edited: payload
-			});
-			payload._id = this.props.data._id;
-			this.props.update(this.props.index, payload);
-		})
-		.catch(err => {
-			console.log(err);
-			this.setState({editMode: false});
+		const payload = {
+			method: 'PUT',
+			body: JSON.stringify(bp_update),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		};
+
+		fetch(update_url, payload)
+			.then(resp => {
+				console.log('Performing PUT using fetch API');
+				if (resp.ok) {
+					this.setState({
+						editMode: false,
+						saved: true
+					});
+					bp_update._id =  this.props.data._id;
+					this.props.update(this.props.index, bp_update);
+				}
+			})
+			.catch(err => {
+				console.error(err);
+				this.setState({editMode: false});
 		});
 	}
+
+	// 	$.ajax({
+	// 		type: 'PUT',
+	// 		url: update_url,
+	// 		data: payload,
+	// 		dataType: 'json'
+	// 	})
+	// 	.done((resp) => {
+	// 		//console.log('DB update response: ' + resp);
+	// 		this.setState({
+	// 			editMode: false,
+	// 			saved: true,
+	// 			//edited: payload
+	// 		});
+	// 		payload._id = this.props.data._id;
+	// 		this.props.update(this.props.index, payload);
+	// 	})
+	// 	.catch(err => {
+	// 		console.log(err);
+	// 		this.setState({editMode: false});
+	// 	});
+	
 
 	displayEditableRow(data) {
 		const bpselect_url = this.props.source + '/bodypart/';
