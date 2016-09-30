@@ -105,6 +105,7 @@ export class SearchResultTable extends Component {
 					<tr>
 						<th>IMG Code</th>
 						<th>Bodypart</th>
+						<th>Laterality</th>
 						<th>Modality</th>
 						<th>Description</th>
 						<th></th>
@@ -184,28 +185,6 @@ export class SearchResultRow extends Component {
 		});
 	}
 
-	// 	$.ajax({
-	// 		type: 'PUT',
-	// 		url: update_url,
-	// 		data: payload,
-	// 		dataType: 'json'
-	// 	})
-	// 	.done((resp) => {
-	// 		//console.log('DB update response: ' + resp);
-	// 		this.setState({
-	// 			editMode: false,
-	// 			saved: true,
-	// 			//edited: payload
-	// 		});
-	// 		payload._id = this.props.data._id;
-	// 		this.props.update(this.props.index, payload);
-	// 	})
-	// 	.catch(err => {
-	// 		console.log(err);
-	// 		this.setState({editMode: false});
-	// 	});
-	
-
 	displayEditableRow(data) {
 		const bpselect_url = this.props.source + '/bodypart/';
 		
@@ -265,6 +244,10 @@ export class SearchResultRow extends Component {
 		)
 	}
 
+	displayLaterality(val) {
+		 return <div className='circle'>{val.charAt(0)}</div>
+	}
+
 	displayDefaultRow(data) {
 		
 		let btn_group = (this.state.delete_confirm) ? this.displayDeleteConfirmPrompt() : this.displayDefaultBtnGrp();
@@ -273,6 +256,7 @@ export class SearchResultRow extends Component {
 				<tr key={data._id}>
 				<td>{data.imgcode}</td>
 				<td>{data.bodypart}</td>
+				<td>{ (data.laterality) ? this.displayLaterality(data.laterality) : '' }</td>
 				<td>{data.modality}</td>
 				<td>{data.description}</td>
 				<td>{btn_group}</td>

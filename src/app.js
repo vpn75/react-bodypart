@@ -56,7 +56,6 @@ export class App extends Component {
 	doSearch(e) {
 		let code = e.target.value.toUpperCase();
 		let re = /^img[1-9]/i;
-		let params = {match: 'partial'};
 		if (re.test(code)) {
 			let search_url = this.props.api_root + '/code/' + code + '?match=partial';
 			fetch(search_url)
@@ -115,6 +114,9 @@ export class App extends Component {
 				modality: rec.modality,
 				description: rec.description
 			};
+			if (rec.laterality) {
+				row.laterality = rec.laterality;
+			}
 			rows.push(<SearchResultRow index={idx} remove={this.spliceResults} update={this.updateResults} source={this.props.api_root} data={row} key={rec._id}/>);
 		});
 		
