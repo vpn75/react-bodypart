@@ -9,3 +9,16 @@
 	color: white;
 	padding: 8px;
 }
+
+.circle
+    {
+    width:30px;
+    height:30px;
+    border-radius:250px;
+    font-size:16px;
+    font-family: Tahoma;
+    color:#fff;
+    line-height:30px;
+    text-align:center;
+    background:#000
+    }
