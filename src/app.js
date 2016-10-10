@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-import * as $ from 'jquery';
-//import {Form, FormControl, FormGroup, Button, ControlLabel, Col} from 'react-bootstrap';
 import {BodyPartDropDown, SearchResultTable, SearchResultRow, ModalitySelect} from './component';
 
 export class App extends Component {
@@ -26,12 +24,16 @@ export class App extends Component {
 	handleBPSelect(bp) {
 		let search_url = this.props.api_root + '/bodypart/' + bp;
 		if (bp.length > 0) {
-			this.serverRequest = $.getJSON(search_url, (data) => {
-				this.setState({
-					results: data.records,
-					optionState: bp
-				});
-			});
+			fetch(search_url)
+				.then(res => {
+					res.json().then(data => {
+						this.setState({
+							results: data.records,
+							optionState: bp
+						});
+					});
+				})
+				.catch(err => console.error(err));
 		}
 	}
 
