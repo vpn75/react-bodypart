@@ -91,10 +91,24 @@ export class App extends Component {
 	}
 
 	spliceResults(i) {
-		this.state.results.splice(i,1);
-		this.setState({
-			results: this.state.results
-		});
+		let objectid = this.state.results[i]._id;
+		let delete_url = `${this.props.api_root}/delete/${objectid}`
+		
+		fetch(delete_url, { method: 'DELETE' })
+			.then(res => {
+				if (res.ok) {
+					this.state.results.splice(i,1);
+					//Call setState using our spliced results array to trigger UI refresh
+					console.log('Successfully deleted record with ID: ' + objectid);
+					this.setState({
+						results: this.state.results
+					});
+				}
+				else {
+					console.error('There was an error when trying to delete record! Please try again.');
+				}
+			})
+			.catch(err => console.error(err));
 	}
 
 	updateResults(i, data) {
