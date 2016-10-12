@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
-//import {Form, FormControl, FormGroup, Button, ControlLabel, Col} from 'react-bootstrap';
 import {render} from 'react-dom';
-import * as $ from 'jquery';
 
 export class BodyPartDropDown extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 				bodyparts: []
 			};
@@ -95,9 +93,6 @@ export class BodyPartDropDown extends Component {
 }
 //Displays Search results table based on data passed in by parent App component
 export class SearchResultTable extends Component {
-	constructor() {
-		super();
-	}
 	render() {
 		return(
 			<table className="table table-striped table-hover">
@@ -122,8 +117,8 @@ export class SearchResultTable extends Component {
 }
 // Component handles display of individual procedure bodyparts returned from API search. Supports Edit and Delete methods on row data.
 export class SearchResultRow extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			editMode: false,
 			edited: {}
@@ -151,7 +146,7 @@ export class SearchResultRow extends Component {
 	//This method handles update of procedure bodyparts
 	submitDBupdate() {
 		const update_url = this.props.source + '/update/' + this.props.data._id;
-		console.log(update_url);
+
 		let bp_update = {
 			imgcode: this.refs.imgcode.value,
 			bodypart: document.querySelector('#formControlBodyPartSelect').value,
@@ -169,7 +164,6 @@ export class SearchResultRow extends Component {
 
 		fetch(update_url, payload)
 			.then(resp => {
-				console.log('Performing PUT using fetch API');
 				if (resp.ok) {
 					this.setState({
 						editMode: false,
@@ -275,8 +269,8 @@ export class SearchResultRow extends Component {
 
 
 export class NavBar extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			mode: 'query'
 		};
