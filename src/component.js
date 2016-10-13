@@ -192,10 +192,17 @@ export class SearchResultRow extends Component {
 						<BodyPartDropDown source={bpselect_url} selected={data.bodypart} inline={true} />
 					</td>
 					<td>
+						<select id='laterality' className='form-control' defaultValue={data.laterality ? data.laterality : ''}>
+							<option value=''></option>
+							<option value='LT' key='LT'>LT</option>
+							<option value='RT' key='RT'>RT</option>
+						</select>
+					</td>
+					<td>
 						{this.createModalitySelect(data.modality)}
 					</td>
 					<td>
-						<input type='text' className='form-control' ref='description' defaultValue={data.description} />
+						<input type='text' className='form-control col-md-6' ref='description' defaultValue={data.description} />
 					</td>
 					<td>
 					<div className='btn-group btn-group-sm'>
@@ -329,4 +336,14 @@ export class ModalitySelect extends Component {
 			</div>
 		);
 	}
+}
+
+export const lateralityDropDown = (props) => {
+	return(
+		<select id='laterality' className='form-control' defaultValue={props.selected}>
+			<option value=''></option>
+			<option value='LT' key='LT'>LT</option>
+			<option value='RT' key='RT'>RT</option>
+		</select>
+	)
 }
