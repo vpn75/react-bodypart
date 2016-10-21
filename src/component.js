@@ -38,7 +38,7 @@ export class BodyPartDropDown extends Component {
 			<div className={baseClass}>
 				<label className='col-sm-2 control-label'>Bodypart:</label>
 				&nbsp;
-				<div className='col-sm-4'>
+				<div className='col-sm-2'>
 					<select id='formControlBodyPartSelect' className='form-control' placeholder='Select Bodypart'>
 						<option value='' key='default'></option>
 						{options}
@@ -153,7 +153,11 @@ export class SearchResultRow extends Component {
 			description: this.refs.description.value.toUpperCase()
 		};
 
-		let laterality = document.getElementbyId('laterality')
+		let laterality = document.getElementById('laterality').value;
+
+		if (laterality != '') {
+			bp_update.laterality = laterality;
+		}
 
 		const payload = {
 			method: 'PUT',
@@ -333,7 +337,7 @@ export class ModalitySelect extends Component {
 		return (
 			<div className={baseClass}>
 				<label className='col-sm-2 control-label'>Modality: </label>
-				<div className='col-sm-4'>
+				<div className='col-sm-2'>
 					<select id='formControlModalitySelect' className='form-control' placeholder='Select Modality'>
 						<option value='' key='default'></option>
 						{options}
