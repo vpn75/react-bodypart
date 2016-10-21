@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-import {BodyPartDropDown, SearchResultTable, SearchResultRow, ModalitySelect} from './component';
+import {BodyPartDropDown, SearchResultTable, SearchResultRow, ModalitySelect, LateralityDropDown} from './component';
 
 export class App extends Component {
 	constructor() {
@@ -119,7 +119,6 @@ export class App extends Component {
 
 	setRowtoEdit(id) {
 		this.setState({editRowID: id});
-		console.log(id);
 	}
 
 	render() {
@@ -311,7 +310,7 @@ export class CreateForm extends Component {
 				
 				let laterality = document.getElementById('laterality').value;
 				
-				if (laterality != 'none') {
+				if (laterality != '') {
 					new_bp.laterality = laterality;
 					console.log(new_bp);
 				}
@@ -420,11 +419,7 @@ export class CreateForm extends Component {
 					<label className='col-sm-2 control-label'>Laterality:</label>
 					&nbsp;
 					<div className='col-sm-2'>
-						<select id='laterality' className='form-control' defaultValue='none'>
-							<option value='none'>None</option>
-							<option value='LT' key='LT'>LT</option>
-							<option value='RT' key='RT'>RT</option>
-						</select>
+						<LateralityDropDown defaultValue='none' />
 					</div>
 				</div>
 				<ModalitySelect validationState={this.state.modality_state} />
