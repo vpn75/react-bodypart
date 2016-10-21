@@ -1,5 +1,5 @@
 # react-bodypart
-PACS Bodypart tool written in ReactJS
+PACS Bodypart management tool written using [React](https://facebook.github.io/react/) framework.
 
 ##Overview
 
