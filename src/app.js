@@ -302,12 +302,20 @@ export class CreateForm extends Component {
 		const isvalid_modality = this.validateModality();
 		const isvalid_procdesc = this.validateDescription();
 		if (isvalid_imgcode && isvalid_bodypart && isvalid_modality && isvalid_procdesc) {
-				const new_bp = {
+				let new_bp = {
 					imgcode: isvalid_imgcode,
 					bodypart: isvalid_bodypart,
 					modality: isvalid_modality,
 					description: isvalid_procdesc.toUpperCase()
 				};
+				
+				let laterality = document.getElementById('laterality').value;
+				
+				if (laterality != 'none') {
+					new_bp.laterality = laterality;
+					console.log(new_bp);
+				}
+
 				//Specify HTTP POST request parameters
 				const payload = {
 					method: 'POST',
@@ -377,6 +385,12 @@ export class CreateForm extends Component {
 			procdesc_feedback = 'glyphicon glyphicon-remove form-control-feedback';
 		}
 		let submit_status = this.state.submitStatus || '';
+
+		let laterality_class = 'form-group';
+		if (submit_status === 'success') {
+			laterality_class += ' has-success';
+		}
+
 		let form_btn = '';
 		if (submit_status === 'error' || submit_status === 'success') {
 			form_btn = <button type='button' className='btn btn-primary btn-sm' 
@@ -395,17 +409,28 @@ export class CreateForm extends Component {
 			<form id='createForm' className='form-horizontal'>
 				<div className={imgcode_class}>
 					<label className='col-sm-2 control-label'>IMG code:</label>
-					<div className='col-sm-4'>
-						<input type='text' id='formIMGcode' className='form-control' placeholder='Enter EPIC IMG code' />
+					<div className='col-sm-3'>
+						<input type='text' id='formIMGcode' className='form-control' placeholder='Enter procedure code' />
 						<span className={imgcode_feedback} />
 					</div>
 				</div>
 				
 				<BodyPartDropDown source={this.props.api_root + '/bodypart/'} standard='true' validationState={this.state.bodypart_state} />
+				<div className={laterality_class}>
+					<label className='col-sm-2 control-label'>Laterality:</label>
+					&nbsp;
+					<div className='col-sm-2'>
+						<select id='laterality' className='form-control' defaultValue='none'>
+							<option value='none'>None</option>
+							<option value='LT' key='LT'>LT</option>
+							<option value='RT' key='RT'>RT</option>
+						</select>
+					</div>
+				</div>
 				<ModalitySelect validationState={this.state.modality_state} />
 				<div className={procdesc_class}>
 					<label className='col-sm-2 control-label'>Enter Description:</label>
-					<div className='col-sm-4'>
+					<div className='col-sm-3'>
 						<input type='text' id='formProcedureDesc' className='form-control' placeholder='Enter description' />
 						<span className={procdesc_feedback} />
 					</div>
