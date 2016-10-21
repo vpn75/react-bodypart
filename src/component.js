@@ -24,7 +24,6 @@ export class BodyPartDropDown extends Component {
 				console.log(err);
 			});
 	}
-
 	//This method returns Bodypart dropdown element with form validation.
 	displayStandardSelect(options) {
 		//Logic to display Bootstrap form validation
@@ -154,6 +153,8 @@ export class SearchResultRow extends Component {
 			description: this.refs.description.value.toUpperCase()
 		};
 
+		let laterality = document.getElementbyId('laterality')
+
 		const payload = {
 			method: 'PUT',
 			body: JSON.stringify(bp_update),
@@ -230,11 +231,16 @@ export class SearchResultRow extends Component {
 		);
 	}
 
-	displayDefaultBtnGrp() {
+	setRowtoEditMode(id) {
+		this.setState({editMode: true});
+		this.props.setRowtoEdit(id);
+	}
+
+	displayDefaultBtnGrp(data) {
 		let check_style = (this.state.saved) ? {color: 'green'} : {color: 'black'};
 		return(
 			<div className='btn-group btn-group-sm'>
-			<button type="button" className="btn btn-default btn-sm" onClick={() => this.setState({editMode: !this.state.editMode})}>
+			<button type='button' className='btn btn-default btn-sm' onClick={() => this.setRowtoEditMode(data._id)}>
 						<span className={(this.state.saved) ? 'glyphicon glyphicon-floppy-saved' : 'glyphicon glyphicon-pencil'} 
 						style={check_style} />
 			</button>
@@ -251,7 +257,7 @@ export class SearchResultRow extends Component {
 
 	displayDefaultRow(data) {
 		
-		let btn_group = (this.state.delete_confirm) ? this.displayDeleteConfirmPrompt() : this.displayDefaultBtnGrp();
+		let btn_group = (this.state.delete_confirm) ? this.displayDeleteConfirmPrompt() : this.displayDefaultBtnGrp(data);
 		
 		return(
 				<tr key={data._id}>
@@ -268,7 +274,7 @@ export class SearchResultRow extends Component {
 
 	render() {
 		//const data = this.props.data;
-		const display = (this.state.editMode) ? this.displayEditableRow(this.props.data) : this.displayDefaultRow(this.props.data);
+		const display = (this.state.editMode && this.props.canEdit) ? this.displayEditableRow(this.props.data) : this.displayDefaultRow(this.props.data);
 
 		return display;
 	}
@@ -336,14 +342,4 @@ export class ModalitySelect extends Component {
 			</div>
 		);
 	}
-}
-
-export const lateralityDropDown = (props) => {
-	return(
-		<select id='laterality' className='form-control' defaultValue={props.selected}>
-			<option value=''></option>
-			<option value='LT' key='LT'>LT</option>
-			<option value='RT' key='RT'>RT</option>
-		</select>
-	)
 }

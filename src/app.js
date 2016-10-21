@@ -18,7 +18,8 @@ export class App extends Component {
 		this.handleTextFocus = this.handleTextFocus.bind(this);
 		this.handleBPSelectFocus = this.handleBPSelectFocus.bind(this);
 		this.spliceResults = this.spliceResults.bind(this);
-		this.updateResults = this.updateResults.bind(this);	
+		this.updateResults = this.updateResults.bind(this);
+		this.setRowtoEdit = this.setRowtoEdit.bind(this);	
 	}
 
 	handleBPSelect(bp) {
@@ -116,6 +117,11 @@ export class App extends Component {
 		this.setState({results: this.state.results});
 	}
 
+	setRowtoEdit(id) {
+		this.setState({editRowID: id});
+		console.log(id);
+	}
+
 	render() {
 		
 		const bpselect_url = this.props.api_root + '/bodypart/';
@@ -133,7 +139,25 @@ export class App extends Component {
 			if (rec.laterality) {
 				row.laterality = rec.laterality;
 			}
-			rows.push(<SearchResultRow index={idx} remove={this.spliceResults} update={this.updateResults} source={this.props.api_root} data={row} key={rec._id}/>);
+			let canEdit = '';
+			if (this.state.editRowID) {
+				canEdit = (this.state.editRowID == rec._id) ? true : false
+			}
+			else {
+				canEdit = true;
+			}
+			rows.push(
+				<SearchResultRow 
+				index={idx} 
+				remove={this.spliceResults} 
+				update={this.updateResults}
+				setRowtoEdit={this.setRowtoEdit}
+				canEdit={canEdit}
+				source={this.props.api_root} 
+				data={row} 
+				key={rec._id}
+				/>
+			);
 		});
 		
 		return(
@@ -292,8 +316,10 @@ export class CreateForm extends Component {
 						'Content-Type': 'application/json'
 					}
 				};
+
+				const create_url = `${this.props.api_root}/create`;
 				//Create new Request object to pass to Fetch API
-				const myPost = new Request(this.props.api_root, payload);
+				const myPost = new Request(create_url, payload);
 				//Perform POST of new procedure bodypart using Fetch API
 				fetch(myPost)
 					.then(resp => {
