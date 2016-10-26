@@ -9,29 +9,24 @@ import {NavBar} from './component';
 const api_root = process.env.API_ROOT || 'http://localhost:3001/api';
 
 export default class AppContainer extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			mode: 'query'
 		};
 
 		this.handleModeChange = this.handleModeChange.bind(this);
-		this.getDisplayMode = this.getDisplayMode.bind(this);
 	}
+
 	handleModeChange(mode) {
-		this.setState({
-			mode: mode
-		});
+		this.setState({ mode });
 		console.log('Mode changed to ' + mode);
 	}
+
 	getDisplayMode() {
-		if (this.state.mode == 'query') {
-			return <App api_root={api_root}/>;
-		}
-		else {
-			return <CreateForm api_root={api_root}/>;
-		}
+		return (this.state.mode == 'query') ? <App api_root={api_root}/> : <CreateForm api_root={api_root}/>;
 	}
+
 	render() {
 		const display = this.getDisplayMode();
 		return (
@@ -43,7 +38,4 @@ export default class AppContainer extends Component {
 	}
 }
 
-render(
-	<AppContainer/>,
-	document.getElementById('app')
-);
+render( <AppContainer/>, document.getElementById('app') );
